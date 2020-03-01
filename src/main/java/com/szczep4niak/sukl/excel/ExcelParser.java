@@ -13,7 +13,9 @@ import com.szczep4niak.sukl.domain.Sw;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ExcelParser {
     private Map<String, Boolean> primaDodavkaLPMap = ImmutableMap.<String, Boolean> builder()
             .put("ne", false)
@@ -47,16 +49,15 @@ public class ExcelParser {
             .build();
 
 
-    public Hlaseni parse(String path) {
+    public Hlaseni parse(File excel_file) {
         try {
-            FileInputStream file = new FileInputStream(new File(path));
+            FileInputStream file = new FileInputStream(excel_file);
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
             Hlaseni hlaseni = mapToHlaseni(workbook.getSheetAt(0));
             hlaseni.setReglp(mapToReglp(workbook.getSheetAt(1)));
             hlaseni.setNereglp(new ArrayList<>());
             hlaseni.setSw(mapToSw(workbook.getSheetAt(3)));
-            System.out.println(hlaseni);
 
             file.close();
             return hlaseni;

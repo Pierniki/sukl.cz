@@ -28,15 +28,15 @@ public class SuklApplication {
 	public static void main(String[] args) throws Exception {
 		ApplicationContext ac = SpringApplication.run(SuklApplication.class, args);
 
-		RestTemplate rt = (RestTemplate) ac.getBean("rest");
+		//RestTemplate rt = (RestTemplate) ac.getBean("rest");
 
-		rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient()));
-		ExcelParser ep = new ExcelParser();
-		Hlaseni hh = ep.parse("xlsx/HlaseniDIS13_00150022329_202001 - test report DIS13.xlsx");
-		hh.setObdobi("202002");
+		//rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient()));
+		//ExcelParser ep = new ExcelParser();
+		//Hlaseni hh = ep.parse("xlsx/HlaseniDIS13_00150022329_202001 - test report DIS13.xlsx");
+		//hh.setObdobi("202002");
 
-		String resp = rt.postForObject("https://testapi.sukl.cz/dis13/v5/hlaseni", hh, String.class);
-		System.out.println(resp);
+		//String resp = rt.postForObject("https://testapi.sukl.cz/dis13/v5/hlaseni", hh, String.class);
+		//System.out.println(resp);
 	}
 
 	private static HttpClient httpClient() throws Exception {
