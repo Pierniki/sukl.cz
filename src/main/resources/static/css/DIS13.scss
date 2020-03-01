@@ -13,24 +13,29 @@ html, body {
     }
 }
 .container {
+    .table {
+        margin-bottom: 0;
+    }
+    .hlaseni-info {
+        width: 400px;
+        margin-bottom: 20px;
+    }
     .hlaseni {
         margin: 0 auto;
         white-space: nowrap;
         overflow: auto;
         max-height: 400px;
-        .table {
-            margin-bottom: 0;
-            td {
-                padding: 3px 20px;
-                vertical-align: middle;
-                text-align: center;
-            }
-            th {
-                padding: 10px 40px;
-            }
-            p {
-                margin-bottom: 2px;
-            }
+        
+        td {
+            padding: 3px 20px;
+            vertical-align: middle;
+            text-align: center;
+        }
+        th {
+            padding: 10px 40px;
+        }
+        p {
+            margin-bottom: 2px;
         }
     }
     .send-button {

@@ -24,12 +24,10 @@ public class DIS13ServiceImp implements DIS13Service {
 
     @Override
     public String sendForm() {
-        ResponseEntity resp;
         String response;
         if (hlaseni != null) {
             try {
-                resp = rt.postForObject("https://testapi.sukl.cz/dis13/v5/hlaseni", hlaseni, ResponseEntity.class);
-                response = resp.toString();
+                response = rt.postForObject("https://testapi.sukl.cz/dis13/v5/hlaseni", hlaseni, String.class);
             } catch (RestClientResponseException e) {
                 return e.getRawStatusCode() + " # " + ResponseParser.getPopisChyby(e.getResponseBodyAsString());
             }

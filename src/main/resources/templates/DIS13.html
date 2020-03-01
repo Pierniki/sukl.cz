@@ -18,37 +18,56 @@
         </form>
     </div>
     <form action="/dis13/send" th:acion="@{/dis13/send}" method="post">
-        <div class="card hlaseni" th:if="${hlaseni != null}">
-            <table class="table">
-                <tr class="card-header">
-                    <th>kodSUKL</th>
-                    <th>nazev / doplnek</th>
-                    <th>sarze</th>
-                    <th>mnozstvi</th>
-                    <th>cena</th>
-                    <th>typHlaseni</th>
-                    <th>typPohybu</th>
-                    <th>typOdberatele</th>
-                    <th>primaDodavkaLP</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="reglp : ${hlaseni.reglp}">
-                    <td th:text="${reglp.kodSUKL}"></td>
-                    <td>
-                        <p th:text="${reglp.nazev}"></p>
-                        <p th:text="${reglp.doplnek}"></p>
-                    </td>
-                    <td th:text="${reglp.sarze}"></td>
-                    <td th:text="${reglp.mnozstvi}"></td>
-                    <td th:text="${reglp.cena}"></td>
-                    <td th:text="${reglp.typHlaseni}"></td>
-                    <td th:text="${reglp.typPohybu}"></td>
-                    <td th:text="${reglp.typOdberatele}"></td>
-                    <td th:text="${reglp.primaDodavkaLP}"></td>
-                </tr>
-                </tbody>
-            </table>
+        <div th:if="${hlaseni != null}">
+            <div class="card hlaseni-info">
+                <table class="table">
+                    <thead>
+                        <tr class="card-header">
+                            <th>kodPracoviste</th>
+                            <th>obdobi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td th:text="${hlaseni.kodPracoviste}"></td>
+                            <td th:text="${hlaseni.obdobi}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card hlaseni">
+                <table class="table">
+                    <thead>
+                        <tr class="card-header">
+                            <th>kodSUKL</th>
+                            <th>nazev / doplnek</th>
+                            <th>sarze</th>
+                            <th>mnozstvi</th>
+                            <th>cena</th>
+                            <th>typHlaseni</th>
+                            <th>typPohybu</th>
+                            <th>typOdberatele</th>
+                            <th>primaDodavkaLP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="reglp : ${hlaseni.reglp}">
+                        <td th:text="${reglp.kodSUKL}"></td>
+                        <td>
+                            <p th:text="${reglp.nazev}"></p>
+                            <p th:text="${reglp.doplnek}"></p>
+                        </td>
+                        <td th:text="${reglp.sarze}"></td>
+                        <td th:text="${reglp.mnozstvi}"></td>
+                        <td th:text="${reglp.cena}"></td>
+                        <td th:text="${reglp.typHlaseni}"></td>
+                        <td th:text="${reglp.typPohybu}"></td>
+                        <td th:text="${reglp.typOdberatele}"></td>
+                        <td th:text="${reglp.primaDodavkaLP}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     <button type="submit" class="btn btn-dark send-button">SEND REPORT</button>
     </form>

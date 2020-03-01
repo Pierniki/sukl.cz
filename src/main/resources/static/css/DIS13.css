@@ -16,6 +16,15 @@ html, body {
   max-width: 300px;
 }
 
+.container .table {
+  margin-bottom: 0;
+}
+
+.container .hlaseni-info {
+  width: 400px;
+  margin-bottom: 20px;
+}
+
 .container .hlaseni {
   margin: 0 auto;
   white-space: nowrap;
@@ -23,21 +32,17 @@ html, body {
   max-height: 400px;
 }
 
-.container .hlaseni .table {
-  margin-bottom: 0;
-}
-
-.container .hlaseni .table td {
+.container .hlaseni td {
   padding: 3px 20px;
   vertical-align: middle;
   text-align: center;
 }
 
-.container .hlaseni .table th {
+.container .hlaseni th {
   padding: 10px 40px;
 }
 
-.container .hlaseni .table p {
+.container .hlaseni p {
   margin-bottom: 2px;
 }
 

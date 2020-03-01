@@ -31,8 +31,10 @@ public class DIS13Controller {
 
     @PostMapping("/dis13")
     public String dis13(Model model, MultipartFile file) throws IOException {
-        dis13Service.setHlaseni(excelParser.parse(FileManager.convert(file)));
-        model.addAttribute("hlaseni", dis13Service.getHlaseni());
+        if (file != null) {
+            dis13Service.setHlaseni(excelParser.parse(file));
+            model.addAttribute("hlaseni", dis13Service.getHlaseni());
+        }
         return "DIS13.html";
     }
 
