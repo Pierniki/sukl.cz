@@ -1,0 +1,46 @@
+html, body {
+    margin: 0;
+}
+.jumbotron {
+    padding: 2rem 2rem;
+}
+.file-loader {
+    margin: 20px 0;
+    width: 400px;
+    #file {
+        padding: 20px;
+        max-width: 300px;
+    }
+}
+.container {
+    .hlaseni {
+        margin: 0 auto;
+        white-space: nowrap;
+        overflow: auto;
+        max-height: 400px;
+        .table {
+            margin-bottom: 0;
+            td {
+                padding: 3px 20px;
+                vertical-align: middle;
+                text-align: center;
+            }
+            th {
+                padding: 10px 40px;
+            }
+            p {
+                margin-bottom: 2px;
+            }
+        }
+    }
+    .send-button {
+        margin-top: 20px;
+    }
+    .resp {
+        margin-top: 20px;
+        p {
+            margin: 0;
+        }
+    }
+}
+

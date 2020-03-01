@@ -12,7 +12,7 @@ import java.util.Objects;
 public class FileManager {
     public static File convert(MultipartFile file) throws IOException {
         File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        FileOutputStream fos = new FileOutputStream(convFile);
+        FileOutputStream fos = new FileOutputStream("xlsx/" + convFile);
         fos.write(file.getBytes());
         fos.close();
         return convFile;

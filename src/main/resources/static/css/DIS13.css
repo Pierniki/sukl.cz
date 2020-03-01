@@ -1,0 +1,55 @@
+html, body {
+  margin: 0;
+}
+
+.jumbotron {
+  padding: 2rem 2rem;
+}
+
+.file-loader {
+  margin: 20px 0;
+  width: 400px;
+}
+
+.file-loader #file {
+  padding: 20px;
+  max-width: 300px;
+}
+
+.container .hlaseni {
+  margin: 0 auto;
+  white-space: nowrap;
+  overflow: auto;
+  max-height: 400px;
+}
+
+.container .hlaseni .table {
+  margin-bottom: 0;
+}
+
+.container .hlaseni .table td {
+  padding: 3px 20px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.container .hlaseni .table th {
+  padding: 10px 40px;
+}
+
+.container .hlaseni .table p {
+  margin-bottom: 2px;
+}
+
+.container .send-button {
+  margin-top: 20px;
+}
+
+.container .resp {
+  margin-top: 20px;
+}
+
+.container .resp p {
+  margin: 0;
+}
+/*# sourceMappingURL=DIS13.css.map */

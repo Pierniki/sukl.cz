@@ -3,65 +3,59 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>DIS13 report</title>
-    <link rel="stylesheet" type="text/css" href="DIS13.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <style>
-        .hlaseni {
-            margin: 0 auto;
-            white-space: nowrap;
-            overflow: auto;
-            width: 90%;
-            max-height: 400px;
-        }
-        td, th {
-            padding: 3px 20px;
-        }
-        p {
-            margin-bottom: 2px;
-        }
-    </style>
+    <link href="../static/css/DIS13.css" th:href="@{/css/DIS13.css}" rel="stylesheet" />
 </head>
 <body>
-<h1>DIS13</h1>
-<form action="#" enctype="multipart/form-data" th:action="@{/dis13}" method="post">
-    <input type="file"
-           id="excel_sheet" name="excel_sheet"
-           accept=".xlsx">
-    <button type="submit">Parse</button>
-</form>
-<div class="hlaseni" th:if="${hlaseni != null}">
-    <table>
-        <thead>
-        <tr>
-            <th>kodSUKL</th>
-            <th>nazev / doplnek</th>
-            <th>sarze</th>
-            <th>mnozstvi</th>
-            <th>cena</th>
-            <th>typHlaseni</th>
-            <th>typPohybu</th>
-            <th>typOdberatele</th>
-            <th>primaDodavkaLP</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="reglp : ${hlaseni.reglp}">
-            <td th:text="${reglp.kodSUKL}"></td>
-            <td>
-                <p th:text="${reglp.nazev}"></p>
-                <p th:text="${reglp.doplnek}"></p>
-            </td>
-            <td th:text="${reglp.sarze}"></td>
-            <td th:text="${reglp.mnozstvi}"></td>
-            <td th:text="${reglp.cena}"></td>
-            <td th:text="${reglp.typHlaseni}"></td>
-            <td th:text="${reglp.typPohybu}"></td>
-            <td th:text="${reglp.typOdberatele}"></td>
-            <td th:text="${reglp.primaDodavkaLP}"></td>
-        </tr>
-        </tbody>
-    </table>
+<h1 class="jumbotron">DIS13</h1>
+<div class="container">
+    <div class="card file-loader">
+        <form action="#" enctype="multipart/form-data" th:action="@{/dis13}" method="post">
+            <input type="file"
+                   id="file" name="file"
+                   accept=".xlsx">
+            <button type="submit" class="btn btn-dark">Parse</button>
+        </form>
+    </div>
+    <form action="/dis13/send" th:acion="@{/dis13/send}" method="post">
+        <div class="card hlaseni" th:if="${hlaseni != null}">
+            <table class="table">
+                <tr class="card-header">
+                    <th>kodSUKL</th>
+                    <th>nazev / doplnek</th>
+                    <th>sarze</th>
+                    <th>mnozstvi</th>
+                    <th>cena</th>
+                    <th>typHlaseni</th>
+                    <th>typPohybu</th>
+                    <th>typOdberatele</th>
+                    <th>primaDodavkaLP</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reglp : ${hlaseni.reglp}">
+                    <td th:text="${reglp.kodSUKL}"></td>
+                    <td>
+                        <p th:text="${reglp.nazev}"></p>
+                        <p th:text="${reglp.doplnek}"></p>
+                    </td>
+                    <td th:text="${reglp.sarze}"></td>
+                    <td th:text="${reglp.mnozstvi}"></td>
+                    <td th:text="${reglp.cena}"></td>
+                    <td th:text="${reglp.typHlaseni}"></td>
+                    <td th:text="${reglp.typPohybu}"></td>
+                    <td th:text="${reglp.typOdberatele}"></td>
+                    <td th:text="${reglp.primaDodavkaLP}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    <button type="submit" class="btn btn-dark send-button">SEND REPORT</button>
+    </form>
+    <div class="card resp alert alert-danger"
+         th:if="${resp != null}">
+        <p th:text="${resp}"></p>
+    </div>
 </div>
-<button class="btn">SEND REPORT</button>
 </body>
 </html>
