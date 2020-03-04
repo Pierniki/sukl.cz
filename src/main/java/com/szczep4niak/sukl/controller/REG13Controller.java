@@ -1,7 +1,7 @@
 package com.szczep4niak.sukl.controller;
 
-import com.szczep4niak.sukl.utility.ExcelParser;
 import com.szczep4niak.sukl.service.ReportsService;
+import com.szczep4niak.sukl.utility.ExcelParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -13,36 +13,35 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Controller
-public class DIS13Controller {
+public class REG13Controller {
     @Autowired
     private ExcelParser excelParser;
 
     @Autowired
-    @Qualifier("dis13Service")
+    @Qualifier("reg13Service")
     private ReportsService reportsService;
 
-    @GetMapping("/dis13")
-    public String dis13(Model model) {
-        return "DIS13.html";
+    @GetMapping("/reg13")
+    public String reg13(Model model) {
+        return "REG13.html";
     }
 
-    @PostMapping("/dis13")
-    public String dis13(Model model, MultipartFile file) {
-        model.addAttribute("resp", excelParser.mapToDis(file));
+    @PostMapping("/reg13")
+    public String reg13(Model model, MultipartFile file) throws IOException {
+        model.addAttribute("resp", excelParser.mapToReg(file));
         model.addAttribute("hlaseni", reportsService.getHlaseni());
-        return "DIS13.html";
+        return "REG13.html";
     }
 
-    @PostMapping("/dis13/send")
+    @PostMapping("/reg13/send")
     public String sendForm(Model model) {
         model.addAttribute("hlaseni", reportsService.getHlaseni());
         model.addAttribute("resp", reportsService.sendForm());
-        return "DIS13.html";
+        return "REG13.html";
     }
 
-    @GetMapping("/dis13/send")
+    @GetMapping("/reg13/send")
     public String redirectSendForm(Model model) {
-        return "DIS13.html";
+        return "REG13.html";
     }
-
 }

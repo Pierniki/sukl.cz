@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-@Service("dis13Service")
-public class DIS13ServiceImp implements ReportsService {
+@Service("reg13Service")
+public class REG13ServiceImp implements ReportsService {
 
     private RestTemplate rt;
     private HttpClientManager hcm;
     private Hlaseni hlaseni;
 
     @Autowired
-    public DIS13ServiceImp(HttpClientManager hcm, RestTemplate rt) {
+    public REG13ServiceImp(HttpClientManager hcm, RestTemplate rt) {
         this.hcm = hcm;
         this.rt = rt;
     }
@@ -26,10 +26,11 @@ public class DIS13ServiceImp implements ReportsService {
     public String sendForm() {
         String response;
         try {
-            this.rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hcm.disHttpClient()));
+            this.rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hcm.regHttpClient()));
             if (hlaseni != null) {
                 try {
-                    response = rt.postForObject("https://testapi.sukl.cz/dis13/v5/hlaseni", hlaseni, String.class);
+                    System.out.println(hlaseni);
+                    response = rt.postForObject("https://testapi.sukl.cz/reg13/v2/hlaseni", hlaseni, String.class);
                 } catch (RestClientResponseException e) {
                     return e.getRawStatusCode() + " # " + ResponseParser.getPopisChyby(e.getResponseBodyAsString());
                 }

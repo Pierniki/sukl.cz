@@ -8,7 +8,7 @@
 		<version>2.2.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.szczep4niak</groupId>
+    <groupId>com.szczepaniak.rukszto</groupId>
 	<artifactId>sukl</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sukl</name>

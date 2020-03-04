@@ -2,55 +2,56 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>DIS13 report</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="../static/css/DIS13.css" th:href="@{/css/DIS13.css}" rel="stylesheet" />
+    <title>REG13 report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="../static/css/DIS13.css" th:href="@{/css/DIS13.css}" rel="stylesheet"/>
 </head>
 <body>
 <div class="jumbotron">
-    <h1><a href="/">HOME</a><span> / DIS13</span></h1>
+    <h1><a href="/">HOME</a><span> / REG13</span></h1>
 </div>
 <div class="container">
     <div class="card file-loader">
-        <form action="#" enctype="multipart/form-data" th:action="@{/dis13}" method="post">
+        <form action="#" enctype="multipart/form-data" th:action="@{/reg13}" method="post">
             <input type="file"
                    id="file" name="file"
                    accept=".xlsx">
             <button type="submit" class="btn btn-dark">Parse</button>
         </form>
     </div>
-    <form action="/dis13/send" th:action="@{/dis13/send}" method="post">
+    <form action="/reg13/send" th:action="@{/reg13/send}" method="post">
         <div th:if="${hlaseni != null}">
             <div class="card hlaseni-info">
                 <table class="table">
                     <thead>
-                        <tr class="card-header">
-                            <th>kodPracoviste</th>
-                            <th>obdobi</th>
-                        </tr>
+                    <tr class="card-header">
+                        <th>kodPracoviste</th>
+                        <th>obdobi</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td th:text="${hlaseni.kodPracoviste}"></td>
-                            <td th:text="${hlaseni.obdobi}"></td>
-                        </tr>
+                    <tr>
+                        <td th:text="${hlaseni.kodPracoviste}"></td>
+                        <td th:text="${hlaseni.obdobi}"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
             <div class="card hlaseni">
                 <table class="table">
                     <thead>
-                        <tr class="card-header">
-                            <th>kodSUKL</th>
-                            <th>nazev / doplnek</th>
-                            <th>sarze</th>
-                            <th>mnozstvi</th>
-                            <th>cena</th>
-                            <th>typHlaseni</th>
-                            <th>typPohybu</th>
-                            <th>typOdberatele</th>
-                            <th>primaDodavkaLP</th>
-                        </tr>
+                    <tr class="card-header">
+                        <th>kodSUKL</th>
+                        <th>nazev / doplnek</th>
+                        <th>sarze</th>
+                        <th>mnozstvi</th>
+                        <th>cena</th>
+                        <th>typHlaseni</th>
+                        <th>typPohybu</th>
+                        <th>typOdberatele</th>
+                        <th>primaDodavkaLP</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <tr th:each="reglp : ${hlaseni.reglp}">
@@ -71,7 +72,7 @@
                 </table>
             </div>
         </div>
-    <button type="submit" class="btn btn-dark send-button">SEND REPORT</button>
+        <button type="submit" class="btn btn-dark send-button">SEND REPORT</button>
     </form>
     <div class="card resp alert alert-danger"
          th:if="${resp != null}">

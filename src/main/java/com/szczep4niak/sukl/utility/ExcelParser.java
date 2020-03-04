@@ -1,35 +1,50 @@
-package com.szczep4niak.sukl.excel;
+package com.szczep4niak.sukl.utility;
 
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableMap;
 import com.szczep4niak.sukl.domain.Hlaseni;
 import com.szczep4niak.sukl.domain.Reglp;
 import com.szczep4niak.sukl.domain.Sw;
-import com.szczep4niak.sukl.utility.FileManager;
+import com.szczep4niak.sukl.service.ReportsService;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.crypto.Data;
-
 @Service
 public class ExcelParser {
+
+    @Autowired
+    @Qualifier("reg13Service")
+    private ReportsService regService;
+
+    @Autowired
+    @Qualifier("dis13Service")
+    private ReportsService disService;
+
+    private DataFormatter formatter = new DataFormatter();
+    private XSSFWorkbook workbook;
+
     private Map<String, Boolean> primaDodavkaLPMap = ImmutableMap.<String, Boolean> builder()
             .put("ne", false)
             .put("tak", true)
             .build();
 
-    private Map<String, Integer> typHlaseniMap = ImmutableMap.<String, Integer> builder()
+    private Map<String, Integer> typHlaseniDisMap = ImmutableMap.<String, Integer>builder()
             .put("Dodávka", 1)
             .put("Distribuce", 2)
+            .build();
+
+    private Map<String, Integer> typHlaseniRegMap = ImmutableMap.<String, Integer>builder()
+            .put("Hlášení dodávek LP lékárnám/osobám oprávněným k výdeji v ČR", 1)
+            .put("Hlášení dodávek LP distributorům v ČR", 2)
             .build();
 
     private Map<String, Integer> typPohybuMap = ImmutableMap.<String, Integer> builder()
@@ -54,27 +69,42 @@ public class ExcelParser {
             .build();
 
 
-    public Hlaseni parse(MultipartFile excel_file) {
+    private void readFile(MultipartFile excel_file) throws IOException {
+        FileInputStream fs = new FileInputStream("xlsx/" + FileManager.convert(excel_file));
+        workbook = new XSSFWorkbook(Objects.requireNonNull(fs));
+
+    }
+
+    public String mapToDis(MultipartFile file) {
         try {
-            FileInputStream file = new FileInputStream("xlsx/" + FileManager.convert(excel_file));
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
-            DataFormatter formatter = new DataFormatter();
-
-            Hlaseni hlaseni = mapToHlaseni(workbook.getSheetAt(0), formatter);
-            hlaseni.setReglp(mapToReglp(workbook.getSheetAt(1), formatter));
+            readFile(file);
+            Hlaseni hlaseni = mapToHlaseni(workbook.getSheetAt(0));
+            hlaseni.setReglp(mapToDisReglp(workbook.getSheetAt(1)));
             hlaseni.setNereglp(new ArrayList<>());
-            hlaseni.setSw(mapToSw(workbook.getSheetAt(3), formatter));
-
-            file.close();
-            return hlaseni;
+            hlaseni.setSw(mapToSw(workbook.getSheetAt(3)));
+            disService.setHlaseni(hlaseni);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Failed to read file.");
+            disService.setHlaseni(null);
+            return "Failed to parse file";
         }
         return null;
     }
 
-    private Hlaseni mapToHlaseni(XSSFSheet sheet, DataFormatter formatter) {
+    public String mapToReg(MultipartFile file) {
+        try {
+            readFile(file);
+            Hlaseni hlaseni = mapToHlaseni(workbook.getSheetAt(0));
+            hlaseni.setReglp(mapToRegReglp(workbook.getSheetAt(1)));
+            hlaseni.setSw(mapToSw(workbook.getSheetAt(2)));
+            regService.setHlaseni(hlaseni);
+        } catch (Exception e) {
+            regService.setHlaseni(null);
+            return "Failed to parse file";
+        }
+        return null;
+    }
+
+    private Hlaseni mapToHlaseni(XSSFSheet sheet) {
         return new Hlaseni(
                 UUID.randomUUID().toString(),
                 formatter.formatCellValue(sheet.getRow(1).getCell(1)),
@@ -82,7 +112,7 @@ public class ExcelParser {
         );
     }
 
-    private List<Reglp> mapToReglp(XSSFSheet sheet, DataFormatter formatter) {
+    private List<Reglp> mapToDisReglp(XSSFSheet sheet) {
         List<Reglp> reglp = new ArrayList<>();
         Iterator<Row> rowIterator = sheet.iterator();
         rowIterator.next();
@@ -95,7 +125,7 @@ public class ExcelParser {
             reg.setSarze(formatter.formatCellValue(row.getCell(3)));
             reg.setMnozstvi((int)row.getCell(4).getNumericCellValue());
             reg.setCena(row.getCell(5).getNumericCellValue());
-            reg.setTypHlaseni(typHlaseniMap.get(formatter.formatCellValue(row.getCell(6))));
+            reg.setTypHlaseni(typHlaseniDisMap.get(formatter.formatCellValue(row.getCell(6))));
             reg.setTypPohybu(typPohybuMap.get(formatter.formatCellValue(row.getCell(7))));
             reg.setTypOdberatele(typOdberateleMap.get(formatter.formatCellValue(row.getCell(8))));
             reg.setPrimaDodavkaLP(primaDodavkaLPMap.get(formatter.formatCellValue(row.getCell(9))));
@@ -105,16 +135,33 @@ public class ExcelParser {
         return reglp;
     }
 
-    private Sw mapToSw(XSSFSheet sheet, DataFormatter formatter) {
+    private List<Reglp> mapToRegReglp(XSSFSheet sheet) {
+        List<Reglp> reglp = new ArrayList<>();
+        Iterator<Row> rowIterator = sheet.iterator();
+        rowIterator.next();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Reglp reg = new Reglp();
+            reg.setKodSUKL(formatter.formatCellValue(row.getCell(0)));
+            reg.setNazev(formatter.formatCellValue(row.getCell(1)));
+            reg.setDoplnek(formatter.formatCellValue(row.getCell(2)));
+            reg.setSarze(formatter.formatCellValue(row.getCell(3)));
+            reg.setMnozstvi((int) row.getCell(4).getNumericCellValue());
+            reg.setCena(row.getCell(5).getNumericCellValue());
+            reg.setTypHlaseni(typHlaseniRegMap.get(formatter.formatCellValue(row.getCell(6))));
+            reg.setTypPohybu(typPohybuMap.get(formatter.formatCellValue(row.getCell(7))));
+            reg.setPolozkaID(UUID.randomUUID().toString());
+            reglp.add(reg);
+        }
+        return reglp;
+    }
+
+    private Sw mapToSw(XSSFSheet sheet) {
         Row row = sheet.getRow(1);
         return new Sw(
                 formatter.formatCellValue(row.getCell(0)),
                 formatter.formatCellValue(row.getCell(1)),
                 formatter.formatCellValue(row.getCell(2))
         );
-    }
-
-    private Map initMap(Object[][] values, DataFormatter formatter) {
-        return Stream.of(values).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));
     }
 }
