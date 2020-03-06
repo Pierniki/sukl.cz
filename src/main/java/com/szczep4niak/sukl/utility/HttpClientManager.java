@@ -23,17 +23,9 @@ public class HttpClientManager {
         password = new String(Files.readAllBytes(Paths.get("certificate/pas.txt"))).toCharArray();
     }
 
-    public HttpClient disHttpClient() throws Exception {
+    public HttpClient HttpClient(String certificatePath) throws Exception {
         return HttpClients.custom().setSSLContext(SSLContextBuilder.create()
-                .loadKeyMaterial(KeyStoreManager.keyStore("certificate/DISSUKL.jks", password), password)
-                .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                .build())
-                .build();
-    }
-
-    public HttpClient regHttpClient() throws Exception {
-        return HttpClients.custom().setSSLContext(SSLContextBuilder.create()
-                .loadKeyMaterial(KeyStoreManager.keyStore("certificate/REGSUKL.jks", password), password)
+                .loadKeyMaterial(KeyStoreManager.keyStore(certificatePath, password), password)
                 .loadTrustMaterial(null, new TrustSelfSignedStrategy())
                 .build())
                 .build();

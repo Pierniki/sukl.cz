@@ -9,28 +9,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-@Service("reg13Service")
-public class REG13ServiceImp implements ReportsService {
+@Service("dis13Service")
+public class ReportsServiceImp implements ReportsService {
 
     private RestTemplate rt;
     private HttpClientManager hcm;
     private Hlaseni hlaseni;
 
     @Autowired
-    public REG13ServiceImp(HttpClientManager hcm, RestTemplate rt) {
+    public ReportsServiceImp(HttpClientManager hcm, RestTemplate rt) {
         this.hcm = hcm;
         this.rt = rt;
     }
 
     @Override
-    public String sendForm() {
+    public String sendForm(String apiUrl, String certificatePath) {
         String response;
         try {
-            this.rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hcm.regHttpClient()));
+            this.rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hcm.HttpClient(certificatePath)));
             if (hlaseni != null) {
                 try {
-                    System.out.println(hlaseni);
-                    response = rt.postForObject("https://testapi.sukl.cz/reg13/v2/hlaseni", hlaseni, String.class);
+                    response = rt.postForObject(apiUrl, hlaseni, String.class);
                 } catch (RestClientResponseException e) {
                     return e.getRawStatusCode() + " # " + ResponseParser.getPopisChyby(e.getResponseBodyAsString());
                 }

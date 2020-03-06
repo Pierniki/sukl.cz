@@ -16,13 +16,15 @@ import java.io.IOException;
 public class DIS13Controller {
     @Autowired
     private ExcelParser excelParser;
-
     @Autowired
-    @Qualifier("dis13Service")
     private ReportsService reportsService;
+
+    private String apiUrl = "https://testapi.sukl.cz/dis13/v5/hlaseni";
+    private String certificatePath = "certificate/DISSUKL150022331G";
 
     @GetMapping("/dis13")
     public String dis13(Model model) {
+        reportsService.setHlaseni(null);
         return "DIS13.html";
     }
 
@@ -36,13 +38,13 @@ public class DIS13Controller {
     @PostMapping("/dis13/send")
     public String sendForm(Model model) {
         model.addAttribute("hlaseni", reportsService.getHlaseni());
-        model.addAttribute("resp", reportsService.sendForm());
+        model.addAttribute("resp", reportsService.sendForm(apiUrl, certificatePath));
         return "DIS13.html";
     }
 
     @GetMapping("/dis13/send")
     public String redirectSendForm(Model model) {
-        return "DIS13.html";
+        return dis13(model);
     }
 
 }

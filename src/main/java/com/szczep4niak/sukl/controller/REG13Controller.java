@@ -16,13 +16,15 @@ import java.io.IOException;
 public class REG13Controller {
     @Autowired
     private ExcelParser excelParser;
-
     @Autowired
-    @Qualifier("reg13Service")
     private ReportsService reportsService;
+
+    private String apiUrl = "https://testapi.sukl.cz/reg13/v2/hlaseni";
+    private String certificatePath = "certificate/MAHSUKL150022354G";
 
     @GetMapping("/reg13")
     public String reg13(Model model) {
+        reportsService.setHlaseni(null);
         return "REG13.html";
     }
 
@@ -36,12 +38,12 @@ public class REG13Controller {
     @PostMapping("/reg13/send")
     public String sendForm(Model model) {
         model.addAttribute("hlaseni", reportsService.getHlaseni());
-        model.addAttribute("resp", reportsService.sendForm());
+        model.addAttribute("resp", reportsService.sendForm(apiUrl, certificatePath));
         return "REG13.html";
     }
 
     @GetMapping("/reg13/send")
     public String redirectSendForm(Model model) {
-        return "REG13.html";
+        return reg13(model);
     }
 }

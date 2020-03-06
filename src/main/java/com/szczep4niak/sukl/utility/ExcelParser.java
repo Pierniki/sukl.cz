@@ -22,12 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class ExcelParser {
 
     @Autowired
-    @Qualifier("reg13Service")
-    private ReportsService regService;
+    private ReportsService reportsService;
 
-    @Autowired
-    @Qualifier("dis13Service")
-    private ReportsService disService;
 
     private DataFormatter formatter = new DataFormatter();
     private XSSFWorkbook workbook;
@@ -82,9 +78,9 @@ public class ExcelParser {
             hlaseni.setReglp(mapToDisReglp(workbook.getSheetAt(1)));
             hlaseni.setNereglp(new ArrayList<>());
             hlaseni.setSw(mapToSw(workbook.getSheetAt(3)));
-            disService.setHlaseni(hlaseni);
+            reportsService.setHlaseni(hlaseni);
         } catch (Exception e) {
-            disService.setHlaseni(null);
+            reportsService.setHlaseni(null);
             return "Failed to parse file";
         }
         return null;
@@ -96,9 +92,9 @@ public class ExcelParser {
             Hlaseni hlaseni = mapToHlaseni(workbook.getSheetAt(0));
             hlaseni.setReglp(mapToRegReglp(workbook.getSheetAt(1)));
             hlaseni.setSw(mapToSw(workbook.getSheetAt(2)));
-            regService.setHlaseni(hlaseni);
+            reportsService.setHlaseni(hlaseni);
         } catch (Exception e) {
-            regService.setHlaseni(null);
+            reportsService.setHlaseni(null);
             return "Failed to parse file";
         }
         return null;
