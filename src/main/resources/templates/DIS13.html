@@ -12,6 +12,7 @@
 </div>
 <div class="container">
     <div class="card file-loader">
+        <div class="card-header">Choose an Excel file</div>
         <form action="#" enctype="multipart/form-data" th:action="@{/dis13}" method="post">
             <input type="file"
                    id="file" name="file"
@@ -21,6 +22,18 @@
     </div>
     <form action="/dis13/send" th:action="@{/dis13/send}" method="post">
         <div th:if="${hlaseni != null}">
+            <div th:switch="${certificates.size() > 0}" class="card certificates">
+                <div class="card-header">Choose a certificate</div>
+                <div th:case="true">
+                     <div th:each="c : ${certificates}" class="form-check">
+                        <input class="form-check-input" type="radio" name="certificate" th:id="${c}" th:value="${c}">
+                        <label th:text="${c}" class="form-check-label"></label>
+                     </div>
+                </div>
+                <div th:case="false">
+                    <p>No certificates found in /certificates/ dir</p>
+                </div>
+            </div>
             <div class="card hlaseni-info">
                 <table class="table">
                     <thead>
@@ -70,8 +83,8 @@
                     </tbody>
                 </table>
             </div>
+            <button type="submit" class="btn btn-dark send-button">SEND REPORT</button>
         </div>
-    <button type="submit" class="btn btn-dark send-button">SEND REPORT</button>
     </form>
     <div class="card resp alert alert-danger"
          th:if="${resp != null}">

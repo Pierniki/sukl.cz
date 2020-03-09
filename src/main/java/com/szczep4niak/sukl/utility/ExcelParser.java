@@ -1,7 +1,10 @@
 package com.szczep4niak.sukl.utility;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import com.google.common.collect.ImmutableMap;
@@ -68,6 +71,16 @@ public class ExcelParser {
     private void readFile(MultipartFile excel_file) throws IOException {
         FileInputStream fs = new FileInputStream("xlsx/" + FileManager.convert(excel_file));
         workbook = new XSSFWorkbook(Objects.requireNonNull(fs));
+        fs.close();
+
+    }
+
+    private void deleteFile() {
+        try {
+            Files.deleteIfExists(Paths.get("./xlsx/tmp.xlsx"));
+        } catch (Exception e) {
+            System.out.println("Failed to delete file");
+        }
 
     }
 
@@ -79,7 +92,10 @@ public class ExcelParser {
             hlaseni.setNereglp(new ArrayList<>());
             hlaseni.setSw(mapToSw(workbook.getSheetAt(3)));
             reportsService.setHlaseni(hlaseni);
+            workbook.close();
+            deleteFile();
         } catch (Exception e) {
+            deleteFile();
             reportsService.setHlaseni(null);
             return "Failed to parse file";
         }
@@ -93,7 +109,10 @@ public class ExcelParser {
             hlaseni.setReglp(mapToRegReglp(workbook.getSheetAt(1)));
             hlaseni.setSw(mapToSw(workbook.getSheetAt(2)));
             reportsService.setHlaseni(hlaseni);
+            workbook.close();
+            deleteFile();
         } catch (Exception e) {
+            deleteFile();
             reportsService.setHlaseni(null);
             return "Failed to parse file";
         }
