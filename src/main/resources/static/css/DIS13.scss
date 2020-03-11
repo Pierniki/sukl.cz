@@ -12,20 +12,30 @@ html, body {
         max-width: 300px;
     }
 }
+.card {
+    margin-bottom: 20px;
+    .card-header {
+        font-weight: bold;
+    }
+}
 .container {
+    .form-check {
+        margin: 5px 0 5px 20px;
+    }
+    .certificates {
+        width: 400px;
+    }
     .table {
         margin-bottom: 0;
     }
     .hlaseni-info {
         width: 400px;
-        margin-bottom: 20px;
     }
     .hlaseni {
         margin: 0 auto;
         white-space: nowrap;
         overflow: auto;
         max-height: 400px;
-        
         td {
             padding: 3px 20px;
             vertical-align: middle;

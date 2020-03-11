@@ -20,12 +20,12 @@ public class HttpClientManager {
     private char[] password;
 
     public HttpClientManager() throws IOException {
-        password = new String(Files.readAllBytes(Paths.get("certificate/pas.txt"))).toCharArray();
+        password = new String(Files.readAllBytes(Paths.get("./certificate/pas.txt"))).toCharArray();
     }
 
-    public HttpClient HttpClient(String certificatePath) throws Exception {
+    public HttpClient HttpClient(String certificateName) throws Exception {
         return HttpClients.custom().setSSLContext(SSLContextBuilder.create()
-                .loadKeyMaterial(KeyStoreManager.keyStore(certificatePath, password), password)
+                .loadKeyMaterial(KeyStoreManager.keyStore("./certificate/" + certificateName, password), password)
                 .loadTrustMaterial(null, new TrustSelfSignedStrategy())
                 .build())
                 .build();

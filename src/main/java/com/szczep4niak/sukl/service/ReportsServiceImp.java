@@ -23,10 +23,12 @@ public class ReportsServiceImp implements ReportsService {
     }
 
     @Override
-    public String sendForm(String apiUrl, String certificatePath) {
+    public String sendForm(String apiUrl, String certificate) {
         String response;
         try {
-            this.rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hcm.HttpClient(certificatePath)));
+            String certificateName = certificate.split("\\.")[0];
+            System.out.println(certificateName);
+            this.rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hcm.HttpClient(certificateName)));
             if (hlaseni != null) {
                 try {
                     response = rt.postForObject(apiUrl, hlaseni, String.class);

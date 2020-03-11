@@ -16,13 +16,28 @@ html, body {
   max-width: 300px;
 }
 
+.card {
+  margin-bottom: 20px;
+}
+
+.card .card-header {
+  font-weight: bold;
+}
+
+.container .form-check {
+  margin: 5px 0 5px 20px;
+}
+
+.container .certificates {
+  width: 400px;
+}
+
 .container .table {
   margin-bottom: 0;
 }
 
 .container .hlaseni-info {
   width: 400px;
-  margin-bottom: 20px;
 }
 
 .container .hlaseni {
