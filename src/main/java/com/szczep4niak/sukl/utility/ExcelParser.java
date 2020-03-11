@@ -101,10 +101,11 @@ public class ExcelParser {
     }
 
     private Hlaseni mapToHlaseni(XSSFSheet sheet) {
+        Row row = sheet.getRow(1);
         return new Hlaseni(
                 UUID.randomUUID().toString(),
-                formatter.formatCellValue(sheet.getRow(1).getCell(1)),
-                formatter.formatCellValue(sheet.getRow(2).getCell(1))
+                formatter.formatCellValue(row.getCell(0)),
+                formatter.formatCellValue(row.getCell(1))
         );
     }
 
