@@ -33,6 +33,7 @@ public class ReportsServiceImp implements ReportsService {
                 try {
                     response = rt.postForObject(apiUrl, hlaseni, String.class);
                 } catch (RestClientResponseException e) {
+                    System.out.println(e);
                     return e.getRawStatusCode() + " # " + ResponseParser.getPopisChyby(e.getResponseBodyAsString());
                 }
             } else {

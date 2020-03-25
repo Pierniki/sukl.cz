@@ -1,7 +1,7 @@
 package com.szczep4niak.sukl.controller;
 
-import com.szczep4niak.sukl.utility.ExcelParser;
 import com.szczep4niak.sukl.service.ReportsService;
+import com.szczep4niak.sukl.utility.ExcelParser;
 import com.szczep4niak.sukl.utility.FileManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class DIS13Controller {
     @Autowired
     private ReportsService reportsService;
 
-    private String apiUrl = "https://testapi.sukl.cz/dis13/v5/hlaseni";
+    private String apiUrl = "https://api.sukl.cz/dis13/v5/hlaseni";
 
     @GetMapping("/dis13")
     public String dis13(Model model) {
@@ -35,8 +35,7 @@ public class DIS13Controller {
     }
 
     @PostMapping("/dis13/send")
-    public String sendForm(Model model,  String certificate) {
-        System.out.println(certificate);
+    public String sendForm(Model model, String certificate) {
         model.addAttribute("certificates", FileManager.getCertificates());
         model.addAttribute("hlaseni", reportsService.getHlaseni());
         model.addAttribute("resp", reportsService.sendForm(apiUrl, certificate));

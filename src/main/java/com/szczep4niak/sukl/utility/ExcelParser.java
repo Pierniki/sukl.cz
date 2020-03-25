@@ -107,7 +107,7 @@ public class ExcelParser {
             readFile(file);
             Hlaseni hlaseni = mapToHlaseni(workbook.getSheetAt(0));
             hlaseni.setReglp(mapToRegReglp(workbook.getSheetAt(1)));
-            hlaseni.setSw(mapToSw(workbook.getSheetAt(2)));
+            hlaseni.setSw(mapToSw(workbook.getSheetAt(3)));
             reportsService.setHlaseni(hlaseni);
             workbook.close();
             deleteFile();
